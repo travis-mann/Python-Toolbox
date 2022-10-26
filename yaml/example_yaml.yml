@@ -1,0 +1,103 @@
+choice 1:
+  selection: value 1
+  value 1: 0
+choice 10:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 11:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 12:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 2:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 3:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    extra choice 3: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 4:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 5:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 6:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 7:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 8:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2
+choice 9:
+  selection: value 1
+  value 1: 0
+  value 2:
+    extra choice 1: 0
+    extra choice 2: 1
+    selection: extra choice 1
+    value: 1
+  value 3: 2

@@ -11,6 +11,7 @@ __status__ = "Production"
 
 # --- imports ---
 import yaml
+from flatten_dict import flatten, unflatten
 
 
 # --- funcs ---
@@ -33,10 +34,10 @@ def read_yaml(label: str, fl: str):
         return None
 
 
-def write_yaml(label: str, value, fl: str) -> None:
+def write_yaml(label, value, fl: str) -> None:
     """
     purpose: write a value to a yaml file for an existing label
-    :param label: param label in yaml file
+    :param label: param label in yaml file, use a tuple of keys for a nested dict
     :param value: value connected to label in yaml file at fl
     :param fl: file location for yaml file
     """
@@ -50,7 +51,12 @@ def write_yaml(label: str, value, fl: str) -> None:
 
     # add value to local dict
     try:
-        values[label] = value
+        if isinstance(label, str):
+            values[label] = value
+        elif isinstance(label, tuple):  # handle nested dict
+            flat_val = flatten(values)
+            flat_val[label] = value
+            values = unflatten(flat_val)
     except KeyError:
         print(f'label {label} doesnt exist in yaml file')
         return None  # guard clause
