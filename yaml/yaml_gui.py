@@ -41,6 +41,8 @@ class YamlGui(QMainWindow):
         self.yaml_fl = yaml_fl
 
         # ~~ other inst attr ~~
+        # yaml keywords
+        self.keywords = ['selection', 'value', 'label']
         # set layout and define central widget
         self.layout = QVBoxLayout()  # layout for the central widget
         self.widget = QWidget()  # central widget
@@ -51,6 +53,7 @@ class YamlGui(QMainWindow):
         yaml_dict = self.get_yaml_contents()
         self.layout.addWidget(self.get_choices_widget(yaml_dict))
         self.layout.addWidget(self.get_push_button('Confirm', self.on_click_confirm))
+
 
         # add main widget to the app
         self.widget.show()
@@ -97,7 +100,7 @@ class YamlGui(QMainWindow):
             # add choices
             for idx, (text, value) in enumerate(choices.items()):
                 # selection is used to store final choice, it is not a choice itself
-                if text == "selection":
+                if text in self.keywords:
                     continue
 
                 # get rb or rb with dropdown widget based on choice config in yaml file
@@ -138,15 +141,20 @@ class YamlGui(QMainWindow):
                           set_checked: bool = False) -> QWidget:
         """
         purpose: create a widget for a single choice - radio buttons for each choice value and an additional
-                 drop down for extra related choices if configured in self.yaml_fl
+                 dropdown for extra related choices if configured in self.yaml_fl
         """
         # case 1: extra options given, add dropdown next to radio button
         if isinstance(value, dict):
             print(f'adding {text} with a dropdown')
             dd_values = list(value.keys())
-            dd_values.remove('value')  # value is the value for this choice, not an extra choice
-            dd_values.remove('selection')  # selection is the final selected label, not an option
-            return self.get_rb_dd_widget(group, text, dd_values, button_group, set_checked=set_checked)
+            # remove values which correspond with keywords
+            label = False
+            for keyword in self.keywords:
+                if keyword in dd_values:
+                    dd_values.remove(keyword)
+                    if keyword == 'label':
+                        label = value['label']
+            return self.get_rb_dd_widget(group, text, dd_values, button_group, set_checked=set_checked, label=label)
 
         # case 2: no sub-options
         else:
@@ -179,7 +187,8 @@ class YamlGui(QMainWindow):
                          choice_text: str,
                          dd_text: list,
                          button_group: QButtonGroup,
-                         set_checked: bool = False) -> QWidget:
+                         set_checked: bool = False,
+                         label: str = False) -> QWidget:
         """
         purpose: create a radio button & drop down menu widget with a horizontal layout
         :param group_text: text next to radio button option
@@ -200,7 +209,14 @@ class YamlGui(QMainWindow):
         rb.toggled.connect(self.on_rb_clicked)
         rb.setChecked(set_checked)
 
-        return package_elements([rb, DDMenu(dd_text, group_text, choice_text, self.yaml_fl)])
+        # add label to drop down if given
+        if isinstance(label, str):
+            dd_label = QLabel(label)
+            dd_package = package_elements([dd_label, DDMenu(dd_text, group_text, choice_text, self.yaml_fl)],
+                                          layout_style=QVBoxLayout)
+            return package_elements([rb, dd_package])
+        else:  # no dropdown label given
+            return package_elements([rb, DDMenu(dd_text, group_text, choice_text, self.yaml_fl)])
 
     @staticmethod
     def get_push_button(text: str, on_click: callable) -> QWidget:
@@ -224,7 +240,7 @@ class YamlGui(QMainWindow):
 class DDMenu(QComboBox):
     """
     purpose: extend QComboBox functionality by exposing attr to on
-             select events with a drop down menu
+             select events with a dropdown menu
     """
     def __init__(self,
                  selections: list,
@@ -291,5 +307,3 @@ if __name__ == "__main__":
     YG = YamlGui('example_yaml.yml')
     # start the app
     sys.exit(App.exec())
-
-

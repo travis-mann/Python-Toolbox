@@ -7,6 +7,7 @@ choice 10:
   value 2:
     extra choice 1: 0
     extra choice 2: 1
+    label: Select an Extra Choice
     selection: extra choice 1
     value: 1
   value 3: 2

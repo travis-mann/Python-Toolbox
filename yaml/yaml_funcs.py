@@ -3,11 +3,13 @@
 
 """yaml_funcs.py: Common functions related to yaml files."""
 
+# --- metadata ---
 __author__ = "Travis Mann"
 __version__ = "1.0"
 __maintainer__ = "Travis Mann"
 __email__ = "tmann.eng@gmail.com"
 __status__ = "Production"
+
 
 # --- imports ---
 import yaml
@@ -64,3 +66,39 @@ def write_yaml(label, value, fl: str) -> None:
     # write back to yaml file
     with open(fl, 'w') as file:
         yaml.dump(values, file)
+
+
+def read_selection(label: str, fl: str) -> list:
+    """
+    purpose: read the selected value(s) from a yaml file formatted for the yaml gui
+    :param label: param label in yaml file
+    :param fl: file location for yaml file
+    :return selection_values: list of choices selected in the gui
+    """
+    # init lists
+    selection_values = []
+
+    # load yaml file
+    with open(fl, 'r') as yaml_file:
+        yaml_values = yaml.safe_load(yaml_file)
+
+    # loop through nested selections to get all relevant values
+    values = yaml_values[label]
+    while True:  # will end when a yaml value isn't a dict
+        selection_label = values['selection']
+        print(selection_label)
+        selection_value = values[selection_label]
+        print(selection_value)
+        if isinstance(selection_value, dict):
+            # value key in dict corresponds to the actual value for that choice
+            true_selection_value = values[selection_label]['value']
+            selection_values.append(true_selection_value)
+            values = selection_value  # load full dict for next loop
+        else:  # final value reached
+            selection_values.append(selection_value)
+            return selection_values
+
+
+# --- testing ---
+if __name__ == "__main__":
+    pass
