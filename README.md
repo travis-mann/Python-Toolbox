@@ -6,7 +6,6 @@ About
 -----
 - Yaml: Read/Write functions with a simple gui created from a formatted yaml file for config applications
 - Email: Todo
-- MySQL: Todo
 - Excel: Todo
 - Unit Testing: Todo
 - Template: Todo
